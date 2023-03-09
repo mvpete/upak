@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace upak.core
 {
-    internal interface IArchive : IDisposable
+    public interface IArchive : IDisposable
     {
-        Stream CreateEntry(string entryName);
+        IReadOnlyCollection<IArchiveEntry> Entries { get; }
+        IArchiveEntry CreateEntry(string entryName);
+        IArchiveEntry? GetEntry(string name);
     }
 }

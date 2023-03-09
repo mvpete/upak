@@ -24,7 +24,6 @@ namespace upak.core
 
             result.Action = Enum.Parse<Actions>(args[0], true);
 
-
             int s = 0;
             for (int i = 1; i < args.Length; ++i)
             {

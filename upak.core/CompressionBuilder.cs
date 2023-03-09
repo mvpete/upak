@@ -5,7 +5,6 @@ namespace upak.core
     public class CompressionBuilder
     {
         private List<IStreamProvider> InputStreamProviders { get; } = new List<IStreamProvider>();
-        private Stream OutputStream { get; set; }
 
         public CompressionBuilder AddInputStreamProvider(IStreamProvider streamProvider)
         {
@@ -13,30 +12,22 @@ namespace upak.core
             return this;
         }
 
-        public CompressionBuilder SetOutputStream(Stream output)
-        {
-            OutputStream = output;
-            return this;
-        }
 
         public CompressionBuilder AddGZipCompression()
         {
             return this;
         }
 
-        public void CreateZipArchive()
+        public void CreateArchive(string archivePath)
         {
-            if (OutputStream == null)
-                throw new InvalidOperationException("No output stream specified.");
-
-            using (ZipArchive archive = new ZipArchive(OutputStream, ZipArchiveMode.Create))
+            using (IArchive archive = ArchiveFactory.CreateArchive(archivePath))
             {
                 foreach (var streamProvider in InputStreamProviders)
                 {
                     var next = streamProvider.GetNextStream();
                     while (next != null)
                     {
-                        var archiveEntry = archive.CreateEntry(next.Name, CompressionLevel.SmallestSize);
+                        var archiveEntry = archive.CreateEntry(next.Name);
                         if (next.Stream != null)
                         {
                             using (var zipStream = archiveEntry.Open())

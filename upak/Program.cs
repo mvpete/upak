@@ -48,6 +48,5 @@ void Compress(Arguments args)
     }
     new CompressionBuilder()
                .AddInputStreamProvider(bsp)
-               .SetOutputStream(File.Open(args.OutputFile, FileMode.Create))
-               .CreateZipArchive();
+               .CreateArchive(args.OutputFile);
 }
