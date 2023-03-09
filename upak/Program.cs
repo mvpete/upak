@@ -14,27 +14,40 @@ using upak.core;
 try
 {
 
+
     Arguments parsedArgs = Arguments.Parse(args);
-    BasicNamedStreamProvider bsp = new BasicNamedStreamProvider();
-
-    foreach (string file in parsedArgs.InputFiles)
+    switch (parsedArgs.Action)
     {
-        bsp.AddFileStream(file);
+        case Actions.Compress:
+            Compress(parsedArgs
+            break;
+        default:
+            throw new Exception("Unknown action.");
     }
-
-    foreach (string dir in parsedArgs.InputDirectories)
-    {
-        bsp.AddDirectoryRecursive(dir);
-    }
-
-
-    new CompressionBuilder()
-        .AddInputStreamProvider(bsp)
-        .SetOutputStream(File.Open(parsedArgs.OutputFile, FileMode.Create))
-        .CreateZipArchive();
 
 }
 catch (Exception ex)
 {
     Console.WriteLine(ex.Message);
+}
+
+
+void Compress(Arguments args)
+{
+
+    BasicNamedStreamProvider bsp = new BasicNamedStreamProvider();
+
+    foreach (string file in args.InputFiles)
+    {
+        bsp.AddFileStream(file);
+    }
+
+    foreach (string dir in args.InputDirectories)
+    {
+        bsp.AddDirectoryRecursive(dir);
+    }
+    new CompressionBuilder()
+               .AddInputStreamProvider(bsp)
+               .SetOutputStream(File.Open(args.OutputFile, FileMode.Create))
+               .CreateZipArchive();
 }
