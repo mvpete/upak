@@ -19,7 +19,7 @@ try
     switch (parsedArgs.Action)
     {
         case Actions.Compress:
-            Compress(parsedArgs
+            Compress(parsedArgs);
             break;
         default:
             throw new Exception("Unknown action.");
