@@ -10,6 +10,8 @@ namespace upak.core.Archives
     {
         private System.IO.Compression.ZipArchiveEntry ThisEntry { get; }
 
+        public string FullName => ThisEntry.FullName;
+
         public ZipArchiveEntry(System.IO.Compression.ZipArchiveEntry entry)
         {
             ThisEntry = entry;

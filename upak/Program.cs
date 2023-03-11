@@ -13,13 +13,14 @@ using upak.core;
 
 try
 {
-
-
     Arguments parsedArgs = Arguments.Parse(args);
     switch (parsedArgs.Action)
     {
         case Actions.Compress:
             Compress(parsedArgs);
+            break;
+        case Actions.Decompress:
+            Decompress(parsedArgs);
             break;
         default:
             throw new Exception("Unknown action.");
@@ -34,7 +35,6 @@ catch (Exception ex)
 
 void Compress(Arguments args)
 {
-
     BasicNamedStreamProvider bsp = new BasicNamedStreamProvider();
 
     foreach (string file in args.InputFiles)
@@ -48,5 +48,10 @@ void Compress(Arguments args)
     }
     new CompressionBuilder()
                .AddInputStreamProvider(bsp)
-               .CreateArchive(args.OutputFile);
+               .CreateArchive(args.Output);
+}
+
+void Decompress(Arguments args)
+{
+    Decompressor.DecompressArchive(args.Input, args.Output);
 }

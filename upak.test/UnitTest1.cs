@@ -22,8 +22,7 @@ namespace upak.core.test
             CompressionBuilder builder = new CompressionBuilder();
             builder
                 .AddInputStreamProvider(provider)
-                .SetOutputStream(archiveStream)
-                .CreateZipArchive();
+                .CreateArchive(".zip", archiveStream);
 
             // Assert
             using (ZipArchive za = new ZipArchive(new MemoryStream(archiveStream.GetBuffer())))
@@ -31,5 +30,7 @@ namespace upak.core.test
                 Assert.AreEqual(2, za.Entries.Count);
             }
         }
+
+
     }
 }

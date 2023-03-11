@@ -12,7 +12,9 @@ namespace upak.core
         public Actions Action { get; set; }
         public List<string> InputFiles { get; } = new List<string>();
         public List<string> InputDirectories { get; } = new List<string>();
-        public string OutputFile { get; set; } = string.Empty;
+        public string Output { get; set; } = string.Empty;
+
+        public string Input { get; set; } = string.Empty;
 
 
         public static Arguments Parse(string[] args)
@@ -40,6 +42,10 @@ namespace upak.core
                 {
                     s = 3;
                 }
+                else if (arg == "-i")
+                {
+                    s = 4;
+                }
                 else
                 {
                     switch (s)
@@ -51,10 +57,16 @@ namespace upak.core
                             result.InputDirectories.Add(arg);
                             break;
                         case 3:
-                            if (!string.IsNullOrEmpty(result.OutputFile))
+                            if (!string.IsNullOrEmpty(result.Output))
                                 throw new Exception("Bad usage: upak [compress] -f file1 file2 file3 -d dir1 dir2 dir3 -o output.zip");
 
-                            result.OutputFile = arg;
+                            result.Output = arg;
+                            break;
+                        case 4:
+                            if (!string.IsNullOrEmpty(result.Input))
+                                throw new Exception("Bad usage: upak decompress -i input.zip -o output_dir");
+
+                            result.Input = arg;
                             break;
                         default:
                             throw new Exception("Bad usage: upak [compress] -f file1 file2 file3 -d dir1 dir2 dir3 -o output.zip");
@@ -63,7 +75,7 @@ namespace upak.core
 
             }
 
-            if (string.IsNullOrEmpty(result.OutputFile) || (result.InputFiles.Count == 0 && result.InputDirectories.Count == 0))
+            if (string.IsNullOrEmpty(result.Output) || (result.InputFiles.Count == 0 && result.InputDirectories.Count == 0 && string.IsNullOrEmpty(result.Input)))
                 throw new Exception("Bad usage: upak [compress] -f file1 file2 file3 -d dir1 dir2 dir3 -o output.zip");
 
             return result;

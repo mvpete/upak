@@ -8,6 +8,7 @@ namespace upak.core
 {
     public interface IArchiveEntry
     {
+        string FullName { get; }
         Stream Open();
         void Delete();
     }

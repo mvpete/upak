@@ -2,7 +2,7 @@
   "profiles": {
     "upak": {
       "commandName": "Project",
-      "commandLineArgs": "compress -f C:\\workspace\\foo.txt -d C:\\workspace\\todo -o foo.zip"
+      "commandLineArgs": "decompress -i foo.zip -o foo"
     }
   }
 }

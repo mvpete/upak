@@ -12,7 +12,6 @@ namespace upak.core
             return this;
         }
 
-
         public CompressionBuilder AddGZipCompression()
         {
             return this;
@@ -20,7 +19,16 @@ namespace upak.core
 
         public void CreateArchive(string archivePath)
         {
-            using (IArchive archive = ArchiveFactory.CreateArchive(archivePath))
+            if (string.IsNullOrEmpty(archivePath) || File.Exists(archivePath))
+                throw new ArgumentException(nameof(archivePath));
+
+            string extension = Path.GetExtension(archivePath);
+            CreateArchive(extension, FileSystem.OpenFile(archivePath, FileMode.Open));
+        }
+
+        public void CreateArchive(string extension, Stream archiveStream)
+        {
+            using (IArchive archive = ArchiveFactory.CreateArchive(extension, archiveStream))
             {
                 foreach (var streamProvider in InputStreamProviders)
                 {

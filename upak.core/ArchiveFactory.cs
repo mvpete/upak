@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using upak.core.Archives;
 
 namespace upak.core
@@ -18,23 +14,20 @@ namespace upak.core
             switch (extension)
             {
                 case ".zip":
-                    return new ZipArchive(File.Open(archivePath, FileMode.Open), System.IO.Compression.ZipArchiveMode.Read);
+                    return new ZipArchive(FileSystem.OpenFile(archivePath, FileMode.Open), System.IO.Compression.ZipArchiveMode.Read);
                 default:
                     break;
             }
             throw new Exception("Invalid archive type.");
         }
 
-        public static IArchive CreateArchive(string archivePath)
+        public static IArchive CreateArchive(string extension, Stream outputStream)
         {
-            if (string.IsNullOrEmpty(archivePath) || File.Exists(archivePath))
-                throw new ArgumentException(nameof(archivePath));
-
-            string extension = Path.GetExtension(archivePath);
+            
             switch (extension)
             {
                 case ".zip":
-                    return new ZipArchive(File.Open(archivePath, FileMode.CreateNew), System.IO.Compression.ZipArchiveMode.Create);
+                    return new ZipArchive(outputStream, System.IO.Compression.ZipArchiveMode.Create);
                 default:
                     break;
             }
